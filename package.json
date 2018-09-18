@@ -1,0 +1,22 @@
+{
+  "name": "interview.js",
+  "version": "0.0.1",
+  "description": "interview problems in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisledet/interview.js.git"
+  },
+  "author": "Chris Ledet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisledet/interview.js/issues"
+  },
+  "homepage": "https://github.com/chrisledet/interview.js#readme",
+  "dependencies": {
+    "mocha": "^5.2.0"
+  }
+}
