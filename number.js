@@ -18,7 +18,7 @@ class Node {
 	- return:    Node(3) -> Node(0) -> Node(5)    // represents 503
 */
 Add = function(leftNode, rightNode) {
-	// TODO: implemenet me!!!!
+	// TODO: implement me!
 	// return Node object of sum
 };
 
