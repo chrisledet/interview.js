@@ -1,7 +1,15 @@
 class Node {
-	constructor(val, nextNode) {
-		this.value = val; // value of the node
+	constructor(value, nextNode) {
+		this.value = value; // value of the node
 		this.next = nextNode; // reference to next node in list
+	}
+
+	getNextNode() {
+		return this.next;
+	}
+	
+	hasNextNode() {
+		return this.getNextNode() !== null;
 	}
 };
 
