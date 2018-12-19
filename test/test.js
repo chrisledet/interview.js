@@ -1,92 +1,100 @@
-var assert = require('assert');
-var number = require('../number');
+let assert = require('assert');
+let number = require('../number');
+let util = require('./util');
 
-describe('Node', function() {
-  describe('Add(x, y)', function() {
-    describe('given even number of nodes on both sides', function(){
-      beforeEach(function(){
-        this.leftNode = new number.Node(1,
-            new number.Node(2,
-              new number.Node(3, null)));
+const PrettyPrint = util.PrettyPrint;
+const NodesFromArray = util.NodesFromArray;
 
-        this.rightNode = new number.Node(1,
-            new number.Node(2,
-              new number.Node(3, null)));
-      });
+describe('Node', ()=> {
+    // (0) + (2)
+    //  2
+    let singleLeft = NodesFromArray([0]);
+    let singleRight = NodesFromArray([2]);
+    describe('given single node on each side', ()=> {
+        describe(`(${PrettyPrint(singleLeft)}) + (${PrettyPrint(singleRight)})`, ()=> {
+            it('returns populated result node of number 2', ()=> {
+                let resultNode = Add(singleLeft, singleRight);
 
-      it('add numbers contained from x and y nodes', function() {
-        var resultNode = Add(this.leftNode, this.rightNode);
-
-        assert.equal(resultNode.value, 2);
-        assert.equal(resultNode.next.value, 4);
-        assert.equal(resultNode.next.next.value, 6);
-      });
+                // console.log('result:', '('+resultNode.toString()+')');
+                assert.notEqual(resultNode, undefined, 'nothing returned from Add()')
+                assert.equal(resultNode.value, 2);
+                assert.equal(resultNode.next, null);
+            });
+        });
     });
 
-    describe('given uneven number of nodes on left side', function(){
-      beforeEach(function(){
-        this.leftNode = new number.Node(1,
-            new number.Node(2, null));
+    // (1 -> 2 -> 3) + (2 -> 2 -> 3)
+    //  346
+    let evenLeft = NodesFromArray([1, 2, 3]);
+    let evenRight = NodesFromArray([2, 2, 3]);
+    describe('given even length of nodes on both sides', ()=> {
+        describe(`(${PrettyPrint(evenLeft)}) + (${PrettyPrint(evenRight)})`, ()=> {
+            it('returns populated result node of number 643', ()=> {
+                let resultNode = Add(evenLeft, evenRight);
 
-        this.rightNode = new number.Node(1,
-            new number.Node(2,
-              new number.Node(3, null)));
-      });
-
-      it('add numbers contained from x and y nodes', function() {
-        var resultNode = Add(this.leftNode, this.rightNode);
-
-        assert.equal(resultNode.value, 2);
-        assert.equal(resultNode.next.value, 4);
-        assert.equal(resultNode.next.next.value, 3);
-      });
+                // console.log('result:', '('+resultNode.toString()+')');
+                assert.notEqual(resultNode, undefined, 'nothing returned from Add()')
+                assert.equal(resultNode.value, 3);
+                assert.equal(resultNode.next.value, 4);
+                assert.equal(resultNode.next.next.value, 6);
+                assert.equal(resultNode.next.next.next, null);
+            });
+        });
     });
 
-    describe('given uneven number of nodes on right side', function(){
-      beforeEach(function(){
-        this.leftNode = new number.Node(1,
-            new number.Node(2,
-              new number.Node(6, null)));
+    // (0 -> 2) + (0 -> 8)
+    //  001
+    let evenCarryLeft = NodesFromArray([0, 2]);
+    let evenCarryRight = NodesFromArray([0, 8]);
+    describe('given even length of nodes on both sides with carry', ()=> {
+        describe(`(${PrettyPrint(evenCarryLeft)}) + (${PrettyPrint(evenCarryRight)})`, ()=> {
+            it('returns populated result node of number 100', ()=> {
+                let resultNode = Add(evenCarryLeft, evenCarryRight);
 
-        this.rightNode = new number.Node(1,
-            new number.Node(2, null));
-      });
-
-      it('add numbers contained from x and y nodes', function() {
-        var resultNode = Add(this.leftNode, this.rightNode);
-
-        assert.equal(resultNode.value, 2);
-        assert.equal(resultNode.next.value, 4);
-        assert.equal(resultNode.next.next.value, 6);
-      });
+                // console.log('result:', '('+resultNode.toString()+')');
+                assert.notEqual(resultNode, undefined, 'nothing returned from Add()')
+                assert.equal(resultNode.value, 0);
+                assert.equal(resultNode.next.value, 0);
+                assert.equal(resultNode.next.next.value, 1);
+                assert.equal(resultNode.next.next.next, null);
+            });
+        });
     });
 
-    describe('given single empty nodes on both sides', function(){
-      beforeEach(function(){
-        this.leftNode = new number.Node(0, null);
-        this.rightNode = new number.Node(0, null);
-      });
+    // (5) + (2 -> 4)
+    // 74
+    let unevenLeft = NodesFromArray([5]);
+    let unevenRight = NodesFromArray([2, 4]);
+    describe('given uneven length of nodes', ()=> {
+        describe(`(${PrettyPrint(unevenLeft)}) + (${PrettyPrint(unevenRight)})`, ()=> {
+            it('returns populated result node of number 47', ()=> {
+                let resultNode = Add(unevenLeft, unevenRight);
 
-      it('contains empty result', function() {
-        var resultNode = Add(this.leftNode, this.rightNode);
-
-        assert.equal(resultNode.value, 0);
-        assert.equal(resultNode.next, null);
-      });
+                // console.log('result:', '('+resultNode.toString()+')');
+                assert.notEqual(resultNode, undefined, 'nothing returned from Add()')
+                assert.equal(resultNode.value, 7);
+                assert.equal(resultNode.next.value, 4);
+                assert.equal(resultNode.next.next, null);
+            });
+        });
     });
 
-    describe('given empty nodes on both sides', function(){
-      beforeEach(function(){
-        this.leftNode = null;
-        this.rightNode = null;
-      });
+    // (3 -> 4 -> 3 -> 9) + (9 -> 2 -> 3)
+    // 2769
+    let unevenCarryLeft = NodesFromArray([3, 4, 3, 9]);
+    let unevenCarryRight = NodesFromArray([9, 2, 3]);
+    describe('given uneven length of nodes with carry', ()=> {
+        describe(`(${PrettyPrint(unevenCarryLeft)}) + (${PrettyPrint(unevenCarryRight)})`, ()=> {
+            it('returns populated result node of number 9672', ()=> {
+                let resultNode = Add(unevenCarryLeft, unevenCarryRight);
 
-      it('contains empty result', function() {
-        var resultNode = Add(this.leftNode, this.rightNode);
-
-        assert.equal(resultNode.value, 0);
-        assert.equal(resultNode.next, null);
-      });
+                // console.log('result:', '('+resultNode.toString()+')');
+                assert.notEqual(resultNode, undefined, 'nothing returned from Add()')
+                assert.equal(resultNode.value, 2);
+                assert.equal(resultNode.next.value, 7);
+                assert.equal(resultNode.next.next.value, 6);
+                assert.equal(resultNode.next.next.next.value, 9);
+            });
+        });
     });
-  });
 });
